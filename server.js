@@ -28,4 +28,27 @@ app.post("/api/auth/register", async (req, res) => {
   return res.json({ user }); //json形式で返す
 });
 
+//ログインAPI
+app.post("/api/auth/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  }); //emailが一致するものを検索
+
+  if (!user) {
+    return res.status(401).json({ error: "ない" }); //401は認証エラー
+  }
+
+  const isPasswordValid = bcrypt.compareSync(password, user.password); //パスワードが一致するか確認
+
+  if (!isPasswordValid) {
+    return res.status(401).json({ error: "パスワードミス" }); //401は認証エラー
+  }
+
+  return res.json({ user }); //トークンを返すのは次の動画で
+});
+
 app.listen(port, () => console.log(`Server is running on port ${port}`)); //第二変数でサーバー起動時の処理を記述
