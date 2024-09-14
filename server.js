@@ -1,6 +1,8 @@
 const express = require("express");
 const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcrypt"); //ハッシュ化するためのライブラリ
+const jwt = require("jsonwebtoken"); //トークンを生成するためのライブラリ
+require("dotenv").config(); //環境変数を使うためのライブラリ
 
 const app = express(); // サーバー起動
 
@@ -47,8 +49,11 @@ app.post("/api/auth/login", async (req, res) => {
   if (!isPasswordValid) {
     return res.status(401).json({ error: "パスワードミス" }); //401は認証エラー
   }
+  const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
+    expiresIn: "4w",
+  }); //トークンを生成する
 
-  return res.json({ user }); //トークンを返すのは次の動画で
+  return res.json({ token }); //トークンを返すのは次の動画で
 });
 
 app.listen(port, () => console.log(`Server is running on port ${port}`)); //第二変数でサーバー起動時の処理を記述
