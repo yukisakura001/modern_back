@@ -31,29 +31,21 @@ router.post("/post", async (req, res) => {
 });
 
 //最近記事取得用API
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+router.get("/get_latest_post", async (req, res) => {
+  //取得であるためGET
 
-  const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  }); //emailが一致するものを検索
-
-  if (!user) {
-    return res.status(401).json({ error: "ない" }); //401は認証エラー
+  try {
+    const latestPost = await prisma.post.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 10,
+    });
+    res.status(200).json(latestPost); //200は成功
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ error: "サーバーエラー" }); //500はサーバーエラー
   }
-
-  const isPasswordValid = bcrypt.compareSync(password, user.password); //パスワードが一致するか確認
-
-  if (!isPasswordValid) {
-    return res.status(401).json({ error: "パスワードミス" }); //401は認証エラー
-  }
-  const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
-    expiresIn: "4w",
-  }); //トークンを生成する
-
-  return res.json({ token }); //トークンを返すのは次の動画で
 });
 
 module.exports = router; //routerをエクスポート
