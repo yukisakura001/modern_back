@@ -1,11 +1,14 @@
 const express = require("express");
 const authRoute = require("./routers/auth"); //ルーターを読み込む
+const cors = require("cors"); //CORSを許可するためのライブラリ
 
 require("dotenv").config(); //環境変数を使うためのライブラリ
 
 const app = express(); // サーバー起動
 
 const port = 5000;
+
+app.use(cors()); //CORSを許可するための記述
 
 app.use(express.json()); //json形式で受け取るための記述
 
