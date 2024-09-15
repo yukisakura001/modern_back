@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken"); //トークンを生成するためのラ�
 const prisma = new PrismaClient(); //PrismaClientのインスタンスを作成
 
 //つぶやき投稿API
-router.post("/register", async (req, res) => {
+router.post("/post", async (req, res) => {
   const { content } = req.body; //json形式で受け取る
 
   if (!content) {
