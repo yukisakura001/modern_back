@@ -22,6 +22,9 @@ router.post("/post", async (req, res) => {
         content,
         authorId: 1, //仮置き
       },
+      include: {
+        author: true, //authorを含める
+      },
     }); //データを作成
     res.status(201).json(newPost); //201は作成成功
   } catch (e) {
@@ -38,6 +41,9 @@ router.get("/get_latest_posts", async (req, res) => {
     const latestPost = await prisma.post.findMany({
       orderBy: {
         createdAt: "desc",
+      },
+      include: {
+        author: true, //authorを含める
       },
       take: 10,
     });
