@@ -4,12 +4,15 @@ const router = require("express").Router(); //ルーター分けるための記�
 const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcrypt"); //ハッシュ化するためのライブラリ
 const jwt = require("jsonwebtoken"); //トークンを生成するためのライブラリ
+const generateIdenticon = require("../util/generateIdenticon");
 
 const prisma = new PrismaClient(); //PrismaClientのインスタンスを作成
 
 //新規ユーザー登録API
 router.post("/register", async (req, res) => {
   const { username, email, password } = req.body; //json形式で受け取る
+
+  const defaultIconImage = generateIdenticon(email); //emailからアイコンを生成
 
   const hashedPassword = await bcrypt.hashSync(password, 10); //10はハッシュ化の強度
 
@@ -23,8 +26,11 @@ router.post("/register", async (req, res) => {
       profile: {
         create: {
           bio: "はじめまして",
-          profileImageUrl: "sample.png",
+          profileImageUrl: defaultIconImage,
         },
+      },
+      include: {
+        profile: true,
       },
     },
   });
