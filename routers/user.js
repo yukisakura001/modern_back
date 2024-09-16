@@ -24,3 +24,5 @@ router.post("/find", isAuthenticated, async (req, res) => {
     res.status(500).json({ message: "サーバーエラー" });
   }
 });
+
+module.exports = router; //routerをエクスポート
