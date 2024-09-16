@@ -21,7 +21,6 @@ router.get("/find", isAuthenticated, async (req, res) => {
     res.status(200).json({
       user: { id: user.id, email: user.email, username: user.username }, //userを返すとパスワードも返してしまうので、idとemailだけ返す
     });
-    console.log(user);
   } catch (e) {
     res.status(500).json({ message: "サーバーエラー" });
   }

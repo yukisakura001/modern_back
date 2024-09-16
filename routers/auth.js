@@ -29,9 +29,9 @@ router.post("/register", async (req, res) => {
           profileImageUrl: defaultIconImage,
         },
       },
-      include: {
-        profile: true,
-      },
+    },
+    include: {
+      profile: true,
     },
   });
   return res.json({ user }); //json形式で返す
