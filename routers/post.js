@@ -20,7 +20,7 @@ router.post("/post", async (req, res) => {
       //postはテーブル名
       data: {
         content,
-        authorId: 1, //仮置き
+        authorId: req.userId, //middolewareで定義したreq.userIdを使う
       },
       include: {
         author: true, //authorを含める
