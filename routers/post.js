@@ -24,7 +24,11 @@ router.post("/post", isAuthenticated, async (req, res) => {
         authorId: req.userId, //middolewareで定義したreq.userIdを使う
       },
       include: {
-        author: true, //authorを含める
+        author: {
+          include: {
+            profile: true, //profileも取得する
+          },
+        },
       },
     }); //データを作成
     res.status(201).json(newPost); //201は作成成功
@@ -43,7 +47,11 @@ router.get("/get_latest_posts", async (req, res) => {
         createdAt: "desc",
       },
       include: {
-        author: true, //authorを含める
+        author: {
+          include: {
+            profile: true, //profileも取得する
+          },
+        },
       },
       take: 10,
     });
