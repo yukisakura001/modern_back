@@ -6,7 +6,7 @@ const isAuthenticated = require("../middlewares/isAuthenticated"); //認証用�
 
 const prisma = new PrismaClient(); //PrismaClientのインスタンスを作成
 
-router.post("/find", isAuthenticated, async (req, res) => {
+router.get("/find", isAuthenticated, async (req, res) => {
   try {
     const user = await prisma.user.findUnique({
       //findUniqueは一つのデータを取得
