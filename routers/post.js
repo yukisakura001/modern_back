@@ -31,7 +31,7 @@ router.post("/post", async (req, res) => {
 });
 
 //最近記事取得用API
-router.get("/get_latest_post", async (req, res) => {
+router.get("/get_latest_posts", async (req, res) => {
   //取得であるためGET
 
   try {
