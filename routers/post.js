@@ -62,4 +62,25 @@ router.get("/get_latest_posts", async (req, res) => {
   }
 });
 
+//特定のユーザーのつぶやき取得用API
+router.get("/:userId", async (req, res) => {
+  const { userId } = req.params; //パラメータを受け取る
+  try {
+    const userPosts = await prisma.post.findMany({
+      where: {
+        authorId: parseInt(userId),
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        author: true,
+      },
+    });
+    res.status(200).json(userPosts);
+  } catch (e) {
+    res.status(500).json({ error: "サーバーエラー" });
+  }
+});
+
 module.exports = router; //routerをエクスポート
